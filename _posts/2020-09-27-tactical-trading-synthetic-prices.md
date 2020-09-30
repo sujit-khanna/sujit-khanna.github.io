@@ -109,17 +109,17 @@ regime1_params_df = run_param_simulation(regime_1_price_df, [10, 20, 40, 50, 60,
 regime1_params_df.sort_values(by=["mean_return"], ascending=False).head(10)
 ===========================================================================
 
-idx        params      mean_return    stdev_return   10_percentile_return
-13	lbk=40_band=2.5	0.115701	0.238962	  -0.288328
-17	lbk=50_band=2	0.103606	0.265799	  -0.405246
-7	lbk=20_band=2	0.095941	0.216310	  -0.346659
-26	lbk=80_band=1.5	0.084921	0.272712	  -0.506629
-12	lbk=40_band=2	0.084603	0.263745	  -0.406878
-19	lbk=50_band=3	0.081826	0.277830	  -0.346280
-25	lbk=80_band=1	0.080644	0.252592	  -0.529578
-22	lbk=60_band=2	0.080461	0.259887	  -0.588156
-11	lbk=40_band=1.5	0.079768	0.265743	  -0.567365
-28	lbk=80_band=2.5	0.076621	0.275044	  -0.307758
+idx        params      mean_return    stdev_return      10_percentile_return
+13	lbk=40_band=2.5	0.115701	0.238962	     -0.288328
+17	lbk=50_band=2	0.103606	0.265799	     -0.405246
+7	lbk=20_band=2	0.095941	0.216310	     -0.346659
+26	lbk=80_band=1.5	0.084921	0.272712	     -0.506629
+12	lbk=40_band=2	0.084603	0.263745	     -0.406878
+19	lbk=50_band=3	0.081826	0.277830	     -0.346280
+25	lbk=80_band=1	0.080644	0.252592	     -0.529578
+22	lbk=60_band=2	0.080461	0.259887	     -0.588156
+11	lbk=40_band=1.5	0.079768	0.265743	     -0.567365
+28	lbk=80_band=2.5	0.076621	0.275044	     -0.307758
 ```
 
 #### Backtest results on High Volatility Synthetic Prices 
