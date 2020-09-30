@@ -336,14 +336,32 @@ print(f"strategy return in low volatility regime is: {strat_syn_reg_1.strat_retu
 
 
 ### Conclusion and Future Work
-* Can make it more tactical by siwtching between different types of strategies, i.e. Momentum vs Value based on market scenarios
-* Can use these synthetic secnarios of risk management as well, by setting optimal leverage levels of a given portfolio or a strategy
+Based on the results above it is clearly visible that strategy parameters chosen by synthetic scenarios perform well across different regimes, which is not the case when we use the parameters found on actual price scenarios. The synthetic parameters across low and high volatility outperform the ones on the actual parameters over the same regime.
 
+```
+param type\regime| High_vol  |   Low_vol    |
+=================|===========|==============|
+Act Price Params |   6.4%    |   -1.4%      |
+-----------------|-----------|--------------|
+Syn Price Params |   6.4%    |    9.89%     |
+-----------------|-----------|--------------|
+```
+
+The toy example details how one can ***tactically*** switch the strategy parameters of a strategy based on market regimes defined according to the VIX index. However, this is just one simple application of the synthetic prices. 
+* Instead of just choosing the appropriate parameters for a given strategy based on market regimes we can even switch between different types of straetgies based on the market environment. i.e. tactically switching between momentum and mean-reversion strategies, or switching to appropriate tail strategies during adverse market conditions
+* One can even make synthetic prices that reflect custom scenarios, i.e. pre-electio/post-election/pre-brexit/post-brexit scenarios.
+* We use these synthetic scenarios of risk management as well, by setting optimal leverage levels of a given portfolio or a strategy or to calculate Value at Risk measures for different scenarios
+* This article detailed just the univariate case of DGP, however we can generate multivariate synthetic prices as well by using
+
+        -  Chloseky decomposition in case of MCMC based DGP
+        -  Time-Series GAN for GAN DGP
+        -  Deep Convolutional VAE for Varational Autoencoder DGP
 
 
 ## References ##
-    1. Stochastic Volatility Model, https://docs.pymc.io/notebooks/stochastic_volatility.html
-    2. The No-U-Turn Sampler: Adaptively Setting Path Lengths in Hamiltonian Monte Carlo,
+    1. TACTICAL INVESTMENT ALGORITHMS: Marcos López de Prado
+    2. Stochastic Volatility Model, https://docs.pymc.io/notebooks/stochastic_volatility.html
+    3. The No-U-Turn Sampler: Adaptively Setting Path Lengths in Hamiltonian Monte Carlo,
        https://arxiv.org/pdf/1111.4246.pdf
-    3. Probabilistic Programmming in Python using PYMC3, https://arxiv.org/pdf/1507.08050.pdf
+    4. Probabilistic Programmming in Python using PYMC3, https://arxiv.org/pdf/1507.08050.pdf
 
