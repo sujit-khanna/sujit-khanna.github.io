@@ -109,18 +109,17 @@ regime1_params_df = run_param_simulation(regime_1_price_df, [10, 20, 40, 50, 60,
 regime1_params_df.sort_values(by=["mean_return"], ascending=False).head(10)
 ===========================================================================
 
-params	mean_return	stdev_return	10_percentile_return
-13	lbk=40_band=2.5	0.115701	0.238962	-0.288328
-17	lbk=50_band=2	0.103606	0.265799	-0.405246
-7	lbk=20_band=2	0.095941	0.216310	-0.346659
-26	lbk=80_band=1.5	0.084921	0.272712	-0.506629
-12	lbk=40_band=2	0.084603	0.263745	-0.406878
-19	lbk=50_band=3	0.081826	0.277830	-0.346280
-25	lbk=80_band=1	0.080644	0.252592	-0.529578
-22	lbk=60_band=2	0.080461	0.259887	-0.588156
-11	lbk=40_band=1.5	0.079768	0.265743	-0.567365
-28	lbk=80_band=2.5	0.076621	0.275044	-0.307758
-
+idx        params      mean_return    stdev_return   10_percentile_return
+13	lbk=40_band=2.5	0.115701	0.238962	  -0.288328
+17	lbk=50_band=2	0.103606	0.265799	  -0.405246
+7	lbk=20_band=2	0.095941	0.216310	  -0.346659
+26	lbk=80_band=1.5	0.084921	0.272712	  -0.506629
+12	lbk=40_band=2	0.084603	0.263745	  -0.406878
+19	lbk=50_band=3	0.081826	0.277830	  -0.346280
+25	lbk=80_band=1	0.080644	0.252592	  -0.529578
+22	lbk=60_band=2	0.080461	0.259887	  -0.588156
+11	lbk=40_band=1.5	0.079768	0.265743	  -0.567365
+28	lbk=80_band=2.5	0.076621	0.275044	  -0.307758
 ```
 
 #### Backtest results on High Volatility Synthetic Prices 
@@ -131,8 +130,8 @@ regime2_params_df[regime2_params_df["mean_return"]!=0].sort_values(by=["mean_ret
 
 ======================================================================
 
-	params	mean_return	stdev_return	10_percentile_return
-1	lbk=10_band=1.5	0.006648	0.093087	-0.213135
+idx         params	mean_return   stdev_return  10_percentile_return
+1	lbk=10_band=1.5	 0.006648	0.093087	-0.213135
 5	lbk=20_band=1	-0.000220	0.100214	-0.200437
 14	lbk=40_band=3	-0.000949	0.027609	-0.108172
 13	lbk=40_band=2.5	-0.001033	0.028484	-0.108172
@@ -153,19 +152,17 @@ act1_trunc_params_df.sort_values(by=["mean_return"], ascending=False).head(10)
 =============================================================================
 
 
-params	mean_return	stdev_return	10_percentile_return
-1	lbk=10_band=1.5	0.052375	NaN	0.052375
-0	lbk=10_band=1	0.018106	NaN	0.018106
-26	lbk=125_band=1.5	-0.026388	NaN	-0.026388
-5	lbk=20_band=1	-0.076717	NaN	-0.076717
-21	lbk=80_band=1.5	-0.079771	NaN	-0.079771
-2	lbk=10_band=2	-0.132045	NaN	-0.132045
-15	lbk=60_band=1	-0.172894	NaN	-0.172894
-10	lbk=40_band=1	-0.176319	NaN	-0.176319
-16	lbk=60_band=1.5	-0.191132	NaN	-0.191132
-11	lbk=40_band=1.5	-0.204886	NaN	-0.204886
-
-
+idx          params	mean_return stdev_return  10_percentile_return
+1	lbk=10_band=1.5	 0.052375	NaN	     0.052375
+0	lbk=10_band=1	 0.018106	NaN	     0.018106
+26	lbk=125_band=1.5 -0.026388	NaN	     -0.026388
+5	lbk=20_band=1	 -0.076717	NaN	     -0.076717
+21	lbk=80_band=1.5	 -0.079771	NaN	     -0.079771
+2	lbk=10_band=2	 -0.132045	NaN	     -0.132045
+15	lbk=60_band=1	 -0.172894	NaN	     -0.172894
+10	lbk=40_band=1	 -0.176319	NaN	     -0.176319
+16	lbk=60_band=1.5	 -0.191132	NaN	     -0.191132
+11	lbk=40_band=1.5	 -0.204886	NaN	     -0.204886
 ```
 
 ```
@@ -173,19 +170,17 @@ act2_trunc_params_df = run_param_simulation(spy2_df["recon_Adj_Close"].to_frame(
 act2_trunc_params_df.sort_values(by=["mean_return"], ascending=False).head(10)
 ==========================================================================
 
-params	mean_return	stdev_return	10_percentile_return
-1	lbk=10_band=1.5	0.036104	NaN	0.036104
-10	lbk=40_band=1	0.012375	NaN	0.012375
-11	lbk=40_band=1.5	0.012375	NaN	0.012375
-12	lbk=40_band=2	0.012375	NaN	0.012375
-13	lbk=40_band=2.5	0.012375	NaN	0.012375
-14	lbk=40_band=3	0.012375	NaN	0.012375
-2	lbk=10_band=2	-0.012616	NaN	-0.012616
-3	lbk=10_band=2.5	-0.012616	NaN	-0.012616
-4	lbk=10_band=3	-0.012616	NaN	-0.012616
-6	lbk=20_band=1.5	-0.026929	NaN	-0.026929
-
-
+idx         params	mean_return stdev_return 10_percentile_return
+1	lbk=10_band=1.5	  0.036104	NaN	    0.036104
+10	lbk=40_band=1	  0.012375	NaN	    0.012375
+11	lbk=40_band=1.5	  0.012375	NaN	    0.012375
+12	lbk=40_band=2	  0.012375	NaN	    0.012375
+13	lbk=40_band=2.5	  0.012375	NaN	    0.012375
+14	lbk=40_band=3	  0.012375	NaN	    0.012375
+2	lbk=10_band=2	  -0.012616	NaN	    -0.012616
+3	lbk=10_band=2.5	  -0.012616	NaN	    -0.012616
+4	lbk=10_band=3	  -0.012616	NaN	    -0.012616
+6	lbk=20_band=1.5	  -0.026929	NaN	    -0.026929
 ```
 
 ### Chosing the best possible parameters from synthetic price and actual price backtests
@@ -204,15 +199,15 @@ best_params_perf1 = regime1_params_df.loc[regime1_params_df["params"].isin(best_
 best_params_perf1
 ==========================================================================
 
-params	mean_return	stdev_return	10_percentile_return
+idx          params	mean_return  stdev_return   10_percentile_return
 7	lbk=20_band=2	0.095941	0.216310	-0.346659
 13	lbk=40_band=2.5	0.115701	0.238962	-0.288328
-
 ```
 
 #### Best parameter set based on backtest results on high volatility synthetic prices
 On the high volatility regime we just found 1 parameter set that had a positive retusn in the backtests i.e *lbk=10_band=1.5*, even though the return profile seems insignificant it could be down to short length of the high volatility prices. For the sake of completeness we will include this parameter in the final strategy as well. 
 ``` one can even ignore this parameter and choose not to trade in high volatility regime altogether.```
+
 ```
 best_returns2 = regime2_params_df.sort_values(by=["mean_return"], ascending=False).head(10)["params"]
 best_stdev2 = regime2_params_df.loc[regime2_params_df["mean_return"]>0].sort_values(by=["stdev_return"], ascending=True).head(10)["params"]
@@ -221,10 +216,10 @@ best_params2 = list(set(best_returns2).intersection(set(best_stdev2)).intersecti
 best_params_perf2 = regime2_params_df.loc[regime2_params_df["params"].isin(best_params2)]
 best_params_perf2
 ==========================================================================
-params	mean_return	stdev_return	10_percentile_return
-1	lbk=10_band=1.5	0.006648	0.093087	-0.213135
-
+idx          params	mean_return  stdev_return   10_percentile_return
+1	lbk=10_band=1.5	  0.006648	0.093087	-0.213135
 ```
+
 
 ***The best parameter for both high and low volatility actual price (reconstructed) backtests was the same i.e lbk=10_band=1.5***
 
@@ -237,9 +232,8 @@ We test the out-of-sample performance on actual prices (2019-2020) using the hig
 best_act_param_df = run_param_simulation(act_df_os["Adj_Close"].to_frame(), [int(param_list[0])], [float(param_list[1])])
 best_act_param_df
 ===========================================================================
-params	mean_return	stdev_return	10_percentile_return
-0	lbk=10_band=1.5	0.050112	NaN	0.050112
-
+idx         params	mean_return stdev_return 10_percentile_return
+0	lbk=10_band=1.5	   0.050112	NaN	     0.050112
 ```
 
 #### Out-of-Sample performance using parameters found using synthetic prices
@@ -310,12 +304,13 @@ regime_df = pd.DataFrame({"params": ["lbk=40/10_band=2.5/1.5"], "mean_return":st
 regime_df
 
 ============================================================================
-params	mean_return	stdev_return	10_percentile_return
-0	lbk=40/10_band=2.5/1.5	0.163333	0.0	0.163333
+idx             params	       mean_return  stdev_return  10_percentile_return
+0	lbk=40/10_band=2.5/1.5	0.163333	0.0	      0.163333
 ```
 
 #### Mapping the parameter siwtching strategy returns on both high and low volatility regimes 
-To check if the strategy performs well across both the regimes, the code block below extracts the performance across high and low volatility
+The code block below extracts the performance across high and low volatility, to check if the strategy performs well across both the regimes.
+
 ```
 strat_perf_df = strat_perf.to_frame()
 strat_perf_df.columns = ["strat_returns"]
@@ -331,6 +326,9 @@ in high volatility regime is: 0.0643364071642365"
 ```
 
 ### Conclusion and Future Work
+* Can make it more tactical by siwtching between different types of strategies, i.e. Momentum vs Value based on market scenarios
+* Can use these synthetic secnarios of risk management as well, by setting optimal leverage levels of a given portfolio or a strategy
+
 
 
 ## References ##

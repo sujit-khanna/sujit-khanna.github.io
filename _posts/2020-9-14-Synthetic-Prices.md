@@ -221,21 +221,22 @@ def run_param_simulation(prices_df, param_list1, param_list2):
 To analyze the performance of the each strategy run (i.e. an independent parameter set) on synthetic prices we created 3 metrics, **mean strategy return**, **standard deviation of strategy return**, and **10th percentile return of the strategy**.
 The top 10 parameter sets on in-sample period (2013-2018) sorted by mean strategy returns, for synthetic and actual prices are shown in the table below
 
+       
 ```
 syn_params_df.sort_values(by=["mean_return"], ascending=False).head(10)
 
 =======================================================================
-idx    params	    mean_return	stdev_return 10_percentile_return
-13	lbk=40_band=2.5	  0.115696	  0.299428	    -0.377473
-9	lbk=20_band=3	  0.105347	  0.322414	    -0.402350
-14	lbk=40_band=3	  0.131550	  0.314481	    -0.407950
-3	lbk=10_band=2.5	  0.054177	  0.282541	    -0.422210
-1	lbk=10_band=1.5	  0.115554	  0.278454	    -0.432102
-24	lbk=125_band=3	  0.063512	  0.291127	    -0.433385
-21	lbk=125_band=1.5  0.102877	  0.294643	    -0.446396
-22	lbk=125_band=2	  0.128665	  0.313494	    -0.473440
-2	lbk=10_band=2	  0.137536	  0.241867	    -0.524847
-17	lbk=60_band=2	  0.142380	  0.342193	    -0.548139
+idx         params	 mean_return	stdev_return 10_percentile_return
+13	lbk=40_band=2.5	  0.115696	  0.299428	 -0.377473
+9	lbk=20_band=3	  0.105347	  0.322414	 -0.402350
+14	lbk=40_band=3	  0.131550	  0.314481	 -0.407950
+3	lbk=10_band=2.5	  0.054177	  0.282541	 -0.422210
+1	lbk=10_band=1.5	  0.115554	  0.278454	 -0.432102
+24	lbk=125_band=3	  0.063512	  0.291127	 -0.433385
+21	lbk=125_band=1.5  0.102877	  0.294643	 -0.446396
+22	lbk=125_band=2	  0.128665	  0.313494	 -0.473440
+2	lbk=10_band=2	  0.137536	  0.241867	 -0.524847
+17	lbk=60_band=2	  0.142380	  0.342193	 -0.548139
 ```
 
 The *stdev_return* is *NaN* and *10_percentile_return* is same as *mean_return* for actual prices, as there is only one price path for in the case of actual/observed prices.
@@ -243,17 +244,17 @@ The *stdev_return* is *NaN* and *10_percentile_return* is same as *mean_return* 
 act_trunc_params_df.sort_values(by=["mean_return"], ascending=False).head(10)
 
 =======================================================================
-idx     params	     mean_return stdev_return 10_percentile_return
-21	lbk=125_band=1.5   0.352037	    NaN	         0.352037
-20	lbk=125_band=1	   0.340561	    NaN	         0.340561
-22	lbk=125_band=2	   0.295713	    NaN	         0.295713
-15	lbk=60_band=1	   0.269968	    NaN	         0.269968
-23	lbk=125_band=2.5   0.124201	    NaN	         0.124201
-16	lbk=60_band=1.5	   0.030204	    NaN	         0.030204
-13	lbk=40_band=2.5	   0.020785	    NaN	         0.020785
-17	lbk=60_band=2	  -0.022522	    NaN	        -0.022522
-11	lbk=40_band=1.5	  -0.038694	    NaN	        -0.038694
-12	lbk=40_band=2	  -0.104843	    NaN	        -0.104843
+idx         params	  mean_return stdev_return 10_percentile_return
+21	lbk=125_band=1.5   0.352037	   NaN	         0.352037
+20	lbk=125_band=1	   0.340561	   NaN	         0.340561
+22	lbk=125_band=2	   0.295713	   NaN	         0.295713
+15	lbk=60_band=1	   0.269968	   NaN	         0.269968
+23	lbk=125_band=2.5   0.124201	   NaN	         0.124201
+16	lbk=60_band=1.5	   0.030204	   NaN	         0.030204
+13	lbk=40_band=2.5	   0.020785	   NaN	         0.020785
+17	lbk=60_band=2	  -0.022522	   NaN	        -0.022522
+11	lbk=40_band=1.5	  -0.038694	   NaN	        -0.038694
+12	lbk=40_band=2	  -0.104843	   NaN	        -0.104843
 ```
 
 Now that we have some performance measure for the strategy parameters, we can proceed with creating a framework
@@ -280,15 +281,15 @@ idx	     params	     mean_return stdev_return 10_percentile_return
 ```
 
 ### Out-of-Sample performance of parameters generated from synthetic prices (highest mean_return)
+  
 ```
 param_list = re.findall(r'''(\d+(?:\.\d+)*)''', syn_params_df.sort_values(by=["mean_return"], ascending=False)["params"].iloc[0])
 best_mean_param_df = run_param_simulation(act_df_os["Adj_Close"].to_frame(), [int(param_list[0])], [float(param_list[1])])
 best_mean_param_df
 
 ======================================================================================
-idx     params	    mean_return	stdev_return 10_percentile_return
+idx          params	 mean_return    stdev_return 10_percentile_return
 0	lbk=40_band=2.0	   0.049309	    NaN	         0.049309
-
 ```
 
 ### Out-of-Sample performance of parameters generated from synthetic prices (lowest standard deviation with positive mean_return)
@@ -299,8 +300,8 @@ best_std_param_df = run_param_simulation(act_df_os["Adj_Close"].to_frame(), [int
 best_std_param_df
 
 ======================================================================================
-idx	     params	    mean_return	stdev_return 10_percentile_return
-0	lbk=10_band=2.0	  0.085758	   NaN	          0.085758
+idx	     params	mean_return stdev_return 10_percentile_return
+0	lbk=10_band=2.0	  0.085758	NaN	     0.085758
 ```
 
 ### Out-of-Sample performance of parameters generated from synthetic prices (highest 10 percentile return, with positive mean_return)
@@ -312,8 +313,8 @@ best_pct_param_df = run_param_simulation(act_df_os["Adj_Close"].to_frame(), [int
 best_pct_param_df
 
 ======================================================================================
-idx      params	    mean_return	stdev_return 10_percentile_return
-0	lbk=40_band=2.5	   0.103046	    NaN	         0.103046
+idx          params	  mean_return stdev_return 10_percentile_return
+0	lbk=40_band=2.5	   0.103046	  NaN	        0.103046
 ```
 
 ### Out-of-Sample performance of parameters generated from synthetic prices on best intersected parameters from mean_return, standard deviation and 10 percentile results
@@ -329,10 +330,11 @@ best_params_perf # in-sample synthetic price performance
 
 ======================================================================================
 
-idx	    params	  mean_return	stdev_return  10_percentile_return
-1	lbk=10_band=2	0.137536	  0.241867	       -0.524847
+idx	    params    mean_return   stdev_return  10_percentile_return
+1	lbk=10_band=2	0.137536       0.241867	       -0.524847
 
 ```
+
 
 ```
 best_act_param_df = run_param_simulation(act_df_os["Adj_Close"].to_frame(), [10], [2])
@@ -340,8 +342,8 @@ best_act_param_df # out-of-sample actual price performance
 
 ======================================================================================
 
-idx     params	  mean_return stdev_return 10_percentile_return
-0	lbk=10_band=2   0.085758	  NaN	        0.085758
+idx         params    mean_return stdev_return 10_percentile_return
+0	lbk=10_band=2   0.085758      NaN	    0.085758
 
 ```
 
