@@ -3,15 +3,13 @@ layout: post
 title: Synthetic Prices for strategy backtesting and tactical trading
 ---
 
-Note:
-The ideas and the backtesting methdologies detailed in this article are for illustrative purpose only, it's is in no way the best represenation of how strategies must be backtested (same goes for metrics used to judge the strategy performance). The main purpose of this article is to exhibit how synthetic prices can augment/enhance the parameter selection process for a given strategy to reduce overfitting. This github(add link) repository contains all the notebooks used in this analysis.
+``` Note: The ideas and the backtesting methodologies detailed in this article are for illustrative purposes only, it's is in no way the best representation of how strategies must be backtested (same goes for metrics used to judge the strategy performance). The main purpose of this article is to exhibit how synthetic prices can augment/enhance the parameter selection process for a given strategy to reduce overfitting. This GitHub (add link) repository contains all the notebooks used in this analysis. ```
 
-This article details, how one can generate and use synthetic prices to avoid false positive strategies/strategy parameters, which is very common when backtests are performed on actual historical prices. Equity prices generally tend to follow a random path generated from some stochastic process, and actual price is just one such realization of these paths. This makes overfitted parameters hard to identify, when strategy backetsts are performed on actual prices. Generally testing a strategy on a set of synthetically generated prices can prevent one from overfitting strategy parameters to a single price path.
+This article details, how one can generate and use synthetic prices to avoid false-positive strategies/strategy parameters, which is very common when backtests are performed on actual historical prices. Equity prices generally tend to follow a random path generated from some stochastic process, and actual price is just one such realization of these paths. This makes overfitted parameters hard to identify when strategy backtests are performed on actual prices. Generally testing a strategy on a set of synthetically generated prices can prevent one from overfitting strategy parameters to a single price path.
 
-The synthetic prices are generally extracted via some Data Generating Process or DGP. There are several methods to create/train a DGP, but the most common ones are Generative Advesarial Networks, Autoenconders (Varational and Regular), and Monte Carlo Methods. In this blog we create a DGP via Markov Chain Monte Carlo method using NUTS (or No U-Turn Sampler), and see how synthetic prices can improve out-of-sample strategy performance. The DGP in this article is is extracted from a stochastic volatility(time-varying) model fit on observed price returns using NUTS.
-The model and some parts of the code are extracted from the PYMC3 tutorial on stochastic volatility[1], if one is familiar with this model, proceed to the Posterior Predictive Checks [section](###generating-synthetic-prices-from-the-posterior) 
+The synthetic prices are generally extracted via some Data Generating Process or DGP. There are several methods to create/train a DGP, but the most common ones are Generative Adversarial Networks, Autoencoders (Varational and Regular), and Monte Carlo Methods. In this blog, we create a DGP via the Markov Chain Monte Carlo method using NUTS (or No U-Turn Sampler) and see how synthetic prices can improve out-of-sample strategy performance. The DGP in this article is extracted from the stochastic volatility(time-varying) model fit on observed price returns using NUTS. The model and some parts of the code are extracted from the PYMC3 tutorial on stochastic volatility[1], if one is familiar with this model, proceed to the Posterior Predictive Checks [section](###generating-synthetic-prices-from-the-posterior) 
 
-The first step involves defining our bayesian model, including the priors and generative process for the stochastic volatility model. This model is adapted from the one mentioned in orignial paper on NUTS and [1], this model has several distribution for the priors such as exponential distribution for <!-- $\nu$ --> <img style="transform: translateY(0.25em);" src="../svg/ugoBluQfTa.svg"/> and <!-- $\sigma$ --> <img style="transform: translateY(0.25em);" src="../svg/gpiPAzINaV.svg"/> (step size), gaussian random walk <!-- $\mathcal{N}$ --> <img style="transform: translateY(0.25em);" src="../svg/OnDwaYF0q7.svg"/> for the latent volatilities (stochastic) prior. The posterior distribution of returns are modeled using T-distribution <!-- $t$ --> <img style="transform: translateY(0.25em);" src="../svg/DNUlVb8IYt.svg"/>. The model is formally defined as <br/>
+The first step involves defining our Bayesian model, including the priors and generative process for the stochastic volatility model. This model is adapted from the one mentioned in the original paper on NUTS and [1], this model has several distribution for the priors such as exponential distribution for <!-- $\nu$ --> <img style="transform: translateY(0.25em);" src="../svg/ugoBluQfTa.svg"/> and <!-- $\sigma$ --> <img style="transform: translateY(0.25em);" src="../svg/gpiPAzINaV.svg"/> (step size), gaussian random walk <!-- $\mathcal{N}$ --> <img style="transform: translateY(0.25em);" src="../svg/OnDwaYF0q7.svg"/> for the latent volatilities (stochastic) prior. The posterior distribution of returns are modeled using T-distribution <!-- $t$ --> <img style="transform: translateY(0.25em);" src="../svg/DNUlVb8IYt.svg"/>. The model is formally defined as <br/>
 
 <!-- $\sigma \sim exp(a)$ --> <p align="center"><img  style="transform: translateY(0.25em);" src="../svg/F1w77g6nis.svg"/></p>
 <!-- $\nu \sim exp(b)$ --> <p align="center"><img style="transform: translateY(0.25em);" src="../svg/7K86ZgtUlH.svg"/></p>
@@ -23,8 +21,7 @@ Graphically this model is represented as, </br>
 
 <p align="center"><img src="https://user-images.githubusercontent.com/71300644/93732430-4c7f3b80-fb9f-11ea-8a80-e36d7fb4a89c.png" height="200"></p>
 
-With our model formally defined, we proceeed with fitting it on the lograthmic returns of the SPY ETF. For generating synthetic returns using the posterior distribution of this model, we use historical log returns for the date range 2013-2018. The data beyond 2018 is considered as the true out of sample data when we compare the backtesting methodologies using actual prices and synthetic prices.
-The code snippet below loads the SPY prices, and defines the models with the priors.
+With our model formally defined, we proceed with fitting it on the logarithmic returns of the SPY ETF. For generating synthetic returns using the posterior distribution of this model, we use historical log returns for the date range 2013-2018. The data beyond 2018 is considered as the true out of sample data when we compare the backtesting methodologies using actual prices and synthetic prices. The code snippet below loads the SPY prices and defines the models with the priors.
 
 ### Loading data and defining model:
 
@@ -60,7 +57,7 @@ The code snippet below loads the SPY prices, and defines the models with the pri
 
     stochastic_vol_model = make_stochastic_volatility_model(spy_df)
 
-It is generally a good practice to visualize the samples from the priors and compare it to the actual data. For faster convergence, it's necessary that we choose appropriate priors and their corresponding parameters. Misspecifying the model can either lead to delayed or no convergence. Looking at the visuals below, we can observe that priors do not seem to be initialized at a unrealistic starting point (neither too restrictive nor too loose).
+It is generally a good practice to visualize the samples from the priors and compare it to the actual data. For faster convergence, we must choose appropriate priors and their corresponding parameters. Misspecifying the model can either lead to delayed or no convergence. Looking at the visuals below, we can observe that priors do not seem to be initialized at an unrealistic starting point (neither too restrictive nor too loose)
 
 ### Sampling and Visualizing the Priors:
 
@@ -75,7 +72,7 @@ It is generally a good practice to visualize the samples from the priors and com
 
 <p align="center"><img src="https://user-images.githubusercontent.com/71300644/93733376-1fcd2300-fba3-11ea-8b70-13a8bb60d4a9.png" height="200"></p>
 
-We now fit the model using NUTS sampler on the observed log returns. We use burned trace, as the first half samples generated by the posterior are generally suboptimal, hence its a good practice to burn/avoid them in the final analysis. With our model trained, lets plot its trace to visualize the the posterior samples (volatility and returns).
+We now fit the model using the NUTS sampler on the observed log returns. We use burned trace, as the first half samples generated by the posterior are generally suboptimal, hence it's a good practice to burn/avoid them in the final analysis. With our model trained, let's plot its trace to visualize the posterior samples (volatility and returns).
 
 ### Fitting the Model on Observed Data using NUTS and Visualizing the Posteriors:
 
@@ -114,7 +111,8 @@ Once we perform PPC by drawing samples from the posterior, we can perform a quic
 
 <p align="center"><img src="https://user-images.githubusercontent.com/71300644/93793906-6eaba480-fc05-11ea-86c6-08aa642aa320.png"></p>
 
-Looking at the above plot, model closely approximates the true distribution, however the true distribution still seems to have fatter tails compared to the sample mean distribution. The next code block reconstructs the SPY ETF prices of the observed return distribution and sample distributions.
+Looking at the above plot, the model closely approximates the true distribution, however, the true distribution still seems to have fatter tails compared to the sample mean distribution. The next code block reconstructs the SPY ETF prices from the observed return distribution and sample distributions.
+
 ```
 # Plot original returns 
 act_idx = spy_df["Adj_Close"].iloc[0]*(np.exp(spy_df['log_ret'])).cumprod()
@@ -134,7 +132,7 @@ fig.suptitle('Synthetic SPY Prices')
 
 <p align="center"><img src="https://user-images.githubusercontent.com/71300644/93795337-3d33d880-fc07-11ea-84ed-b5fe9295dd63.png"></p>
 
-The PPC generates about 4000 different samples, and looking at the plots above, we observe that certain price paths, do not follow a similar trajectory to the observed prices (i.e. a few synthetic prices have negative mean). We can further eliminate unwanted prices, by selecting the synthetic returns that closely resemble the actual returns distribution. This can usually be done using a distribution based distance measures like **Wasserstein distances, Kullback–Leibler divergence, Jensen–Shannon divergence etc**. In this article we select the top <!-- $n$ --> <img style="transform: translateY(0.25em);" src="../svg/ojecHSYwnA.svg"/> synthetic samples that have the least wasserstein-1 distance to the observed returns. 
+The PPC generates about 4000 different samples and looking at the plots above. We observe that certain prices, do not follow a similar trajectory to the observed prices (i.e. a few synthetic prices have negative mean). We can further eliminate unwanted prices, by selecting the synthetic returns that closely resemble the actual returns distribution. This can usually be done using distribution based distance measures like **Wasserstein distances, Kullback–Leibler divergence, Jensen–Shannon divergence etc**. In this article we select the top <!-- $n$ --> <img style="transform: translateY(0.25em);" src="../svg/ojecHSYwnA.svg"/> synthetic samples that have the least Wasserstein-1 distance to the observed returns. 
 
 The code block below selects the top <!-- $n$ --> <img style="transform: translateY(0.25em);" src="../svg/trTddHiKdb.svg"/>, sample returns with the lowest wasserstein distance to the observed returns.
 
@@ -188,7 +186,7 @@ def gen_bband_signals(df, lbk, band_dev):
     return pd.Series(bb_signals, index=df.index)
 ```
 
-Looking at the above function, we see that the strategy primarily uses 2 parameters, the lookback period i.e. (*lbk*), and deviation multiplier (*band_dev*). In this section we will analyze a host of parameter sets on in sample data (till 2018) using both synthetic prices and actual prices. Then compare the performance of these parameters on the observed out-of-sample data (2019-2020). The code block below runs all possible combination of parameters *lbk* and *band_dev* on synthetic prices and the actual price series, where *param_list1=[10, 20, 40, 60, 120]* corresponds to *lbk* parameter and *param_list2=[1, 1.5, 2, 2.5, 3]* corresponds to *band_dev* parameter.  </br>
+Looking at the above function, we see that the strategy primarily uses 2 parameters, the lookback period i.e. (lbk), and deviation multiplier (band_dev). In this section, we will analyze a host of parameter sets on in-sample data (till 2018) using both synthetic prices and actual prices. Then compare the performance of these parameters on the observed out-of-sample data (2019-2020). The code block below runs all possible combination of parameters *lbk* and *band_dev* on synthetic prices and the actual price series, where *param_list1=[10, 20, 40, 60, 120]* corresponds to *lbk* parameter and *param_list2=[1, 1.5, 2, 2.5, 3]* corresponds to *band_dev* parameter.  </br>
 ``` Note: For sake of simplicity transaction costs and slippages are not considered in these backtests.```
 
 ```
@@ -218,8 +216,8 @@ def run_param_simulation(prices_df, param_list1, param_list2):
     act_trunc_params_df = run_param_simulation(act_df_trunc["Adj_Close"].to_frame(), [10, 20, 40, 60, 125], [1, 1.5, 2, 2.5, 3])
 ```
 
-To analyze the performance of the each strategy run (i.e. an independent parameter set) on synthetic prices we created 3 metrics, **mean strategy return**, **standard deviation of strategy return**, and **10th percentile return of the strategy**.
-The top 10 parameter sets on in-sample period (2013-2018) sorted by mean strategy returns, for synthetic and actual prices are shown in the table below
+To To analyze the performance of each strategy run (i.e. an independent parameter set) on synthetic prices we created 3 metrics, **mean strategy return**, **he standard deviation of strategy return (i.e. across different synthetic prices)**, and **10th percentile return of the strategy**.
+The top 10 parameter sets on the in-sample period (2013-2018) sorted by mean strategy returns, for synthetic and actual prices are shown in the table below.
 
        
 ```
@@ -257,15 +255,14 @@ idx         params	  mean_return stdev_return 10_percentile_return
 12	lbk=40_band=2	  -0.104843	   NaN	        -0.104843
 ```
 
-Now that we have some performance measure for the strategy parameters, we can proceed with creating a framework
-that selects the best possible parameter based on it's performance on synthetic prices.  </br>
+Now that we have some performance measure for the strategy parameters, we can proceed with creating a framework that selects the best possible parameter based on its performance on synthetic prices.  </br>
 
 Note: 
 * Since we only have a single path for the actual prices, we will compare the best performing parameter in this space (by mean_returns or returns), with the parameters identified by our framework on synthetic prices.
-* We are only considering strategy return based metrics and avoiding other risk and risk adjusted metrics, as we do not want to increase the dimensionality of the problem in this Toy example.
+* We are only considering strategy return based metrics and avoiding other risk and risk-adjusted metrics, as we do not want to increase the dimensionality of the problem in this Toy example.
 * The strategy chosen for this example is only for illustration, for all practical purposes this strategy would have been eliminated from the analysis by looking at really poor *10_percentile_return* metric values.
 
-We define a very basic framework to select the best possible parameter set using synthetic prices where we take the ***intersection of best possible strategy parameters across all three metrics***. The key idea here is to implement a very restrictive filter where the strategy parameter is choosen only when it performs well across all three metrics. The tables below show the Out-Of-Sample performance (2019-2020), for the best performing parameter sets on actual and synthetic prices.
+We define a basic framework to select the best possible parameter set using synthetic prices where we take the ***intersection of the best possible strategy parameters across all three metrics***. The key idea here is to implement a very restrictive filter where the strategy parameter is chosen only when it performs well across all three metrics. The tables below show the Out-Of-Sample performance (2019-2020), for the best performing parameter sets on actual and synthetic prices.
 
 ### Running Out-of-Sample performance on best parameter found on actual in-sample prices
 
@@ -347,16 +344,16 @@ idx         params    mean_return stdev_return 10_percentile_return
 
 ```
 
-Based on the tables above, we observed that the best parameter set chosen based on in-sample actual prices tends to vastly underperform in the out-of-sample [periods](###running-out-of-sample-performance-on-best-parameter-found-on-actual-in-sample-prices). Conversely the parameter set choosen based the framework defined for synthetic prices, had the out-of-sample performance profile similar to the in-sample synthetic prices [profile](###out-of-sample-performance-of-parameters-generated-from-synthetic-prices-on-best-intersected-parameters-from-mean_return,-standard-deviation-and-10-percentile-results)
+Based on the tables above, we observed that the best parameter set chosen based on in-sample actual prices tends to vastly underperform in the out-of-sample [periods](###running-out-of-sample-performance-on-best-parameter-found-on-actual-in-sample-prices). Conversely, the parameter set chosen based the framework defined for synthetic prices had the out-of-sample performance profile similar to the in-sample synthetic prices [profile](###out-of-sample-performance-of-parameters-generated-from-synthetic-prices-on-best-intersected-parameters-from-mean_return,-standard-deviation-and-10-percentile-results)
 
 ### Conculsion and Next Steps:
-The article above details how one can use synthetic prices generated by the posterior distribution of our bayesian model to minimize the risk of finding false positive strategy parameters or in other words reduce the risk of overfitting (prevelant when actual prices are used). The parameter selection framework described in this article only looks at total cumulative returns as a metric to identify strategy parameters, however one can use risk adjusted or more sophisticated performance measures in this framework. Another advantage of using synthetic prices is that we can perform statistical analysis of performance measure, and perform distribution analysis to come up with additional insights about the performance of the strategy.
+The article above details how one can use synthetic prices generated by the posterior distribution of our Bayesian model to minimize the risk of finding false positive strategy parameters or in other words reduce the risk of overfitting (prevalent when actual prices are used). The parameter selection framework described in this article only looks at total cumulative returns as a metric to identify strategy parameters, however, one can use risk-adjusted or more sophisticated performance measures in this framework. Another advantage of using synthetic prices is that we can perform statistical analysis of performance measures, and perform distribution analysis to come up with additional insights about the performance of the strategy..
 
 
 Additional Notes:
-*   Similar to univariate time series model described, a multi-variate synthetic prices can also be generated using cholesky decomposition.
-*   Synthetic Prices can also be generated via Time-Series GAN models, or Varational Autoencoders. However GAN models are highly susciptable to mode-collapse and require appropriate tuning of hyper-parameters. Based on my experience both GANs and VAEs tend to create synthetic prices very similar to the actual prices, i.e. the prices generated by these models tend to exhibit less variation with respect to observed/actual prices.
-*   We can very conveniently create a tactical trading model that optimizes a strategy based on a outcome of a certain scenario. As trading strategies tend to exhibit different behavior under different market regimes, creating synthetic prices for different regimes can help in mapping strategy's performance to market regimes. This information can then be used tactically to switch ON/OFF or change allcation of a particular strategy.
+*   Similar to the univariate time series model described, multi-variate synthetic prices can also be generated using Cholesky decomposition.
+*   Synthetic Prices can also be generated via Time-Series GAN models or Varational Autoencoders. However, GAN models are highly susceptible to mode-collapse and require appropriate tuning of hyper-parameters. Based on my experience both GANs and VAEs tend to create synthetic prices very similar to the actual prices, i.e. the prices generated by these models tend to exhibit less variation with respect to observed/actual prices.
+*   We can very conveniently create a tactical trading model that optimizes a strategy based on the outcome of a certain scenario. As trading strategies tend to exhibit different behavior under different market regimes, creating synthetic prices for different regimes can help in mapping strategy's performance to market regimes. This information can then be used tactically to switch ON/OFF or change the allocation of a particular strategy
 *   The next article defines a methodology for creating such a tactical trading framework.
 
 ## References ##
