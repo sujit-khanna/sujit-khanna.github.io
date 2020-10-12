@@ -3,13 +3,14 @@ layout: post
 title: Synthetic Prices for strategy backtesting and tactical trading
 ---
 
-``` Note: The ideas and the backtesting methodologies detailed in this article are for illustrative purposes only, it's is in no way the best representation of how strategies must be backtested (same goes for metrics used to judge the strategy performance). The main purpose of this article is to exhibit how synthetic prices can augment/enhance the parameter selection process for a given strategy to reduce overfitting. This GitHub (add link) repository contains all the notebooks used in this analysis. ```
+``` Note: The ideas and the backtesting methodologies detailed in this article are for illustrative purposes only, it's is in no way the best representation of how strategies must be backtested (same goes for metrics used to judge the strategy performance). The main purpose of this article is to exhibit how synthetic prices can augment/enhance the parameter selection process for a given strategy to reduce overfitting. This``` [GitHub](https://github.com/sujit-khanna/synthetic_prices_using_MCMC) ```repository contains all the notebooks used in this article. ```
 
 This article details, how one can generate and use synthetic prices to avoid false-positive strategies/strategy parameters, which is very common when backtests are performed on actual historical prices. Equity prices generally tend to follow a random path generated from some stochastic process, and actual price is just one such realization of these paths. This makes overfitted parameters hard to identify when strategy backtests are performed on actual prices. Generally testing a strategy on a set of synthetically generated prices can prevent one from overfitting strategy parameters to a single price path.
 
 The synthetic prices are generally extracted via some Data Generating Process or DGP. There are several methods to create/train a DGP, but the most common ones are Generative Adversarial Networks, Autoencoders (Varational and Regular), and Monte Carlo Methods. In this blog, we create a DGP via the Markov Chain Monte Carlo method using NUTS (or No U-Turn Sampler) and see how synthetic prices can improve out-of-sample strategy performance. The DGP in this article is extracted from the stochastic volatility(time-varying) model fit on observed price returns using NUTS. The model and some parts of the code are extracted from the PYMC3 tutorial on stochastic volatility[1], if one is familiar with this model, proceed to the Posterior Predictive Checks [section](###generating-synthetic-prices-from-the-posterior) 
 
-The first step involves defining our Bayesian model, including the priors and generative process for the stochastic volatility model. This model is adapted from the one mentioned in the original paper on NUTS and [1], this model has several distribution for the priors such as exponential distribution for <!-- $\nu$ --> <img style="transform: translateY(0.25em);" src="../svg/ugoBluQfTa.svg"/> and <!-- $\sigma$ --> <img style="transform: translateY(0.25em);" src="../svg/gpiPAzINaV.svg"/> (step size), gaussian random walk <!-- $\mathcal{N}$ --> <img style="transform: translateY(0.25em);" src="../svg/OnDwaYF0q7.svg"/> for the latent volatilities (stochastic) prior. The posterior distribution of returns are modeled using T-distribution <!-- $t$ --> <img style="transform: translateY(0.25em);" src="../svg/DNUlVb8IYt.svg"/>. The model is formally defined as <br/>
+The first step involves defining our Bayesian model, including the priors and generative process for the stochastic volatility model. This model is adapted from the one mentioned in the original paper on NUTS and [1], this model has several distribution for the priors such as exponential distribution for <!-- $\nu$ --> <img style="transform: translateY(0.25em);" src="../svg/ugoBluQfTa.svg"/> and <!-- $\sigma$ --> <img style="transform: translateY(0.25em);" src="../svg/gpiPAzINaV.svg"/> (step size), gaussian random walk <!-- $\mathcal{N}$ --> <img style="transform: translateY(0.25em);" src="../svg/OnDwaYF0q7.svg"/> for the latent volatilities (stochastic) prior. The posterior distribution of returns are modeled using T-distribution <!-- $t$ --> <img style="transform: translateY(0.25em);" src="../svg/DNUlVb8IYt.svg"/>. The model is formally defined as
+
 
 <!-- $\sigma \sim exp(a)$ --> <p align="center"><img  style="transform: translateY(0.25em);" src="../svg/F1w77g6nis.svg"/></p>
 <!-- $\nu \sim exp(b)$ --> <p align="center"><img style="transform: translateY(0.25em);" src="../svg/7K86ZgtUlH.svg"/></p>
@@ -17,7 +18,8 @@ The first step involves defining our Bayesian model, including the priors and ge
 
 <!-- $log(y_{i}) \sim t(\nu, 0, exp(-2s_{i}))$ --><p align="center"> <img style="transform: translateY(0.25em);" src="../svg/ATfaCOQF8Q.svg"/></p>
 
-Graphically this model is represented as, </br>
+Graphically this model is represented as, 
+
 
 <p align="center"><img src="https://user-images.githubusercontent.com/71300644/93732430-4c7f3b80-fb9f-11ea-8a80-e36d7fb4a89c.png" height="200"></p>
 
@@ -92,7 +94,8 @@ We now fit the model using the NUTS sampler on the observed log returns. We use 
 
 ### Generating Synthetic Prices from the Posterior
 
-Once we fit the posterior to the observed data using NUTS, we can then use it to generate data sets using the parameter settings of the samples drawn from the posterior. This is done using PPC or Posterior Predictive Checks. According to Rubin(1984), PPC can be summarized as </br>
+Once we fit the posterior to the observed data using NUTS, we can then use it to generate data sets using the parameter settings of the samples drawn from the posterior. This is done using PPC or Posterior Predictive Checks. According to Rubin(1984), PPC can be summarized as 
+
 
 ```Given observed data X_obs, what would be exect to see in hypothetical replications of the```
 ```study that generated X_obs? Intuitively, if the model specifications are appropriate we```
@@ -186,7 +189,8 @@ def gen_bband_signals(df, lbk, band_dev):
     return pd.Series(bb_signals, index=df.index)
 ```
 
-Looking at the above function, we see that the strategy primarily uses 2 parameters, the lookback period i.e. (lbk), and deviation multiplier (band_dev). In this section, we will analyze a host of parameter sets on in-sample data (till 2018) using both synthetic prices and actual prices. Then compare the performance of these parameters on the observed out-of-sample data (2019-2020). The code block below runs all possible combination of parameters *lbk* and *band_dev* on synthetic prices and the actual price series, where *param_list1=[10, 20, 40, 60, 120]* corresponds to *lbk* parameter and *param_list2=[1, 1.5, 2, 2.5, 3]* corresponds to *band_dev* parameter.  </br>
+Looking at the above function, we see that the strategy primarily uses 2 parameters, the lookback period i.e. (lbk), and deviation multiplier (band_dev). In this section, we will analyze a host of parameter sets on in-sample data (till 2018) using both synthetic prices and actual prices. Then compare the performance of these parameters on the observed out-of-sample data (2019-2020). The code block below runs all possible combination of parameters *lbk* and *band_dev* on synthetic prices and the actual price series, where *param_list1=[10, 20, 40, 60, 120]* corresponds to *lbk* parameter and *param_list2=[1, 1.5, 2, 2.5, 3]* corresponds to *band_dev* parameter.  
+
 ``` Note: For sake of simplicity transaction costs and slippages are not considered in these backtests.```
 
 ```
@@ -255,7 +259,8 @@ idx         params	  mean_return stdev_return 10_percentile_return
 12	lbk=40_band=2	  -0.104843	   NaN	        -0.104843
 ```
 
-Now that we have some performance measure for the strategy parameters, we can proceed with creating a framework that selects the best possible parameter based on its performance on synthetic prices.  </br>
+Now that we have some performance measure for the strategy parameters, we can proceed with creating a framework that selects the best possible parameter based on its performance on synthetic prices.  
+
 
 Note: 
 * Since we only have a single path for the actual prices, we will compare the best performing parameter in this space (by mean_returns or returns), with the parameters identified by our framework on synthetic prices.
