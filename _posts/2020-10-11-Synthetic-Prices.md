@@ -97,7 +97,7 @@ We now fit the model using the NUTS sampler on the observed log returns. We use 
 Once we fit the posterior to the observed data using NUTS, we can then use it to generate data sets using the parameter settings of the samples drawn from the posterior. This is done using PPC or Posterior Predictive Checks. According to Rubin(1984), PPC can be summarized as 
 
 
-```Given observed data X_obs, what would be exect to see in hypothetical replications of the```
+```Given observed data X_obs, what would we expect to see in hypothetical replications of the```
 ```study that generated X_obs? Intuitively, if the model specifications are appropriate we```
 ```would expect to see something similar to what we saw originally, at least similar in relevant ways. ```
 
@@ -220,7 +220,7 @@ def run_param_simulation(prices_df, param_list1, param_list2):
     act_trunc_params_df = run_param_simulation(act_df_trunc["Adj_Close"].to_frame(), [10, 20, 40, 60, 125], [1, 1.5, 2, 2.5, 3])
 ```
 
-To To analyze the performance of each strategy run (i.e. an independent parameter set) on synthetic prices we created 3 metrics, **mean strategy return**, **he standard deviation of strategy return (i.e. across different synthetic prices)**, and **10th percentile return of the strategy**.
+To analyze the performance of each strategy run (i.e. an independent parameter set) on synthetic prices we created 3 metrics, **mean strategy return**, **he standard deviation of strategy return (i.e. across different synthetic prices)**, and **10th percentile return of the strategy**.
 The top 10 parameter sets on the in-sample period (2013-2018) sorted by mean strategy returns, for synthetic and actual prices are shown in the table below.
 
        
