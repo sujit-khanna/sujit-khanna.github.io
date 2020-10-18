@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Synthetic Prices for strategy backtesting and tactical trading
+title: Synthetic Prices for strategy backtesting and parameter estimation
 ---
 
 ``` Note: The ideas and the backtesting methodologies detailed in this article are for illustrative purposes only, it's is in no way the best representation of how strategies must be backtested (same goes for metrics used to judge the strategy performance). The main purpose of this article is to exhibit how synthetic prices can augment/enhance the parameter selection process for a given strategy to reduce overfitting. This``` [GitHub](https://github.com/sujit-khanna/synthetic_prices_using_MCMC) ```repository contains all the notebooks used in this article. ```
