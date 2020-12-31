@@ -6,7 +6,7 @@ In this article we take a look at how state-of-the-art quantum machine learning 
 where a,b are complex numbers. This enables qubits to take multiple values at a time which helps in performing computations which is not possible using a conventional computer. The qubits can also be entangled where multiple qubits are intertwined and measuring one qubit can tell is the state of the other and collapse the superposition irrespective of the distance at which these qubits are separated (can be light years away), the phenomenon of quantum teleporation and faster than light communication (proven to be impossible currently) are based on this concept.
 
 ## Quantum Machine Learning
-A quantum algorithm is a set of instruction that is implemented on a quantum circuit to solve a given problem. A quantum circuit consists of a set of coherent quantum operations performed over quantum data using a single or multi-qubit gates. Grover's algorithm that can search an unsorted database in O(sqrt(N)), and Shor's algorithm that can factor integers in polynomial time are one of the most well known quantum algorithms. The main motivation behind quantum ML algorithms is based on the fact that ```if small quantum information processors can produce statistical patterns that are computationally difficult to be producted by classical computers, then perhaps they can also recognize patterns that are equally difficult to recognize classically```. \cite . These Quantum ML algorithms can potentially reduce training samples as well, meaning they would require less data to learn patterns, thus exhibiting an advantage over classical ML algorithms.
+A quantum algorithm is a set of instruction that is implemented on a quantum circuit to solve a given problem. A quantum circuit consists of a set of coherent quantum operations performed over quantum data using a single or multi-qubit gates. Grover's algorithm that can search an unsorted database in O(sqrt(N)), and Shor's algorithm that can factor integers in polynomial time are one of the most well known quantum algorithms. The main motivation behind quantum ML algorithms is based on the fact that ```if small quantum information processors can produce statistical patterns that are computationally difficult to be producted by classical computers, then perhaps they can also recognize patterns that are equally difficult to recognize classically[1]```.  . These Quantum ML algorithms can potentially reduce training samples as well, meaning they would require less data to learn patterns, thus exhibiting an advantage over classical ML algorithms.
 
 ### Varational Circuits
 Quantum ML algorithms are generally represented by varational circuits which are also known as parameterized quantum circuits. As these circuits contain free parameters and are differentiable they become ideal candidates to represent parameters of classical machine learning models. As these circuits are differentiable they can be optimized by classical iterative gradient based optimization techniques to find the best parameter set θ'. 
@@ -92,12 +92,12 @@ In this project we implemented two types of quantum neural networks and bench-ma
 
 ## References ##
     1.  Jacob Biamonte, Peter Wittek, Nicola Pancotti, Patrick Rebentrost Nathan Wiebe, and Seth Lloyd. Quantum machine learning. Nature, 549(7671):195–202, Sep 2017. 
-    2. Hemant Gahankari. Pennylane community. pennylane, 2020. </br>
-    3. IRIS DATASET http://archive.ics.uci.edu/ml/datasets/Iris/. Uci repository.</br>
-    4. S Ahmed (https://pennylane.ai/qml/demos/tutorial_data_uploading_classifier.html). Data Uploading Classifier. pennylane.</br>
-    5. pennylane (https://pennylane.ai/qml/demos/tutorial_qnn_module_tf.html). Turning quantum nodes into keras layers. </br>
-    6. pennylane Tutorials (https://pennylane.ai/qml/demos/tutorial_multiclass_classification.html). Multiclass margin classifier. pennylane, 2020. </br>
-    7. Xanadu (pennylane.ai). pennylane.ai.</br>
-    8. Pennylane Tutorials(https://pennylane.ai/qml/demos/tutorial_quantum_transfer_learning.html). Quantum transfer learning. pennylane, 2020. </br>
+    2. Pennylane community. pennylane, 2020.
+    3. IRIS DATASET http://archive.ics.uci.edu/ml/datasets/Iris/. Uci repository.
+    4. S Ahmed (https://pennylane.ai/qml/demos/tutorial_data_uploading_classifier.html). Data Uploading Classifier. pennylane.
+    5. pennylane (https://pennylane.ai/qml/demos/tutorial_qnn_module_tf.html). Turning quantum nodes into keras layers. 
+    6. pennylane Tutorials (https://pennylane.ai/qml/demos/tutorial_multiclass_classification.html). Multiclass margin classifier. pennylane, 2020. 
+    7. Xanadu (pennylane.ai). pennylane.ai.
+    8. Pennylane Tutorials(https://pennylane.ai/qml/demos/tutorial_quantum_transfer_learning.html). Quantum transfer learning. pennylane, 2020. 
     9. Pennylane Varational Circuits (https://pennylane.ai/qml/glossary/variational_circuit.html)
 
