@@ -90,6 +90,10 @@ In this project we implemented two types of quantum neural networks and bench-ma
 *   ***Input data loading***: If this component dominates the running time, we cannot get a quantum advantage.
 *   ***Intractability***: The number of gates which could provide a quantum speedup, even if it exists, is unknown.
 
+
+The repository containing the relevant notebooks can be accessed here 
+[Quantum Machine Learning](https://github.com/sujit-khanna/Quantum_Machine_Learning)
+
 ## References ##
     1.  Jacob Biamonte, Peter Wittek, Nicola Pancotti, Patrick Rebentrost Nathan Wiebe, and Seth Lloyd. Quantum machine learning. Nature, 549(7671):195–202, Sep 2017. 
     2. Pennylane community. pennylane, 2020.
