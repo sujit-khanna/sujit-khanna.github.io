@@ -24,15 +24,7 @@ The raw prices used in this paper contains SPY ETF Prices from Jan, 2013 to Nov,
 Once we have the raw input images we need to generate corresponding labels so that we can train it on a classification model, the labeling scheme either labels the images as ’buy’, ’sell’ or neutral’ based on percentage price move(threshold) over the next 10 days. If the percentage move is above positive threshold the image is labelled as ’buy’, else if its below the negative threshold we label the image as ’sell’, else the image is labelled as ’neutral’. This procedure can be formalized as
 
 
- <!-- $$ Label_{i}=\left\{
-                \begin{array}{ll}
-                  buy (1) \; \; \; if \;  price_{t+10}/price_{t+1} -1 > thresh \\
-                  sell(-1) \; \; \; elif \; price_{t+10}/price_{t+1} -1 < -thresh \\
-                  neutral(0) \; \; \; otherwise \\
-                \end{array}
-              \right. $$ --> 
-
-<div align="center"><img src="../svg/KvLUHiZQqP.svg"/></div> 
+<p align="center"><img src="https://user-images.githubusercontent.com/71300644/103729424-686fe700-4fae-11eb-861d-c742793bb4f9.png"></p>
 
 
 
