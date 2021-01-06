@@ -11,7 +11,8 @@ The majority of work done in classification of price moves using machine learnin
 ## Temporal Convolutional Networks (TCN)
 TCNs offer a new approach to sequence modelling and based on the work done by Bai et al. [2018][1], TCNs exhibits longer memory and tends to outperform LSTM, RNNs, and LSTM-CNN models on sequence modelling and image classification tasks like sequential MNIST, P-MNIST, Polyphonic music, Word-level language modeling etc. TCN consists of residual blocks which usually contains two layers of dilated causal convolution and activation functions, the dilated convolutions enables the output to represnet a wider range of the inputs thus expanding its receptive field. This feature also makes TCN approach ideal for video classification, where the a video represents a sequence of images. In our framework, we will represent the sequence of price images as a video and feed it to TCN for the classification task. Our TCN model  uses ***Many-to-One*** mapping to classify the image, i.e. many input images are used as an input to classify one output. See the figure (from [1]) for more detailed architecture of TCN.
 
-<p align="center"><img src="https://user-images.githubusercontent.com/71300644/103604891-54f64a80-4ee0-11eb-8556-b1e094161b74.png", height="250"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/71300644/103604891-54f64a80-4ee0-11eb-8556-b1e094161b74.png"></p>
+
 
 ## Approach
 Our approach involves building all the components of this framework from the ground up, which involves ***data generation, data labeling, data preprocessing, Model Training and Predictions***, and finally ***trade decision module*** for taking final trade decision. To generate the dataset we first generate price based technical indicators and plot them along with the closing price as png images using ***plotly***[2]. The output labels are generated based on subsequent price changes. Once the dataset is generated (more information is following sections), we create a tensor containing 10 consecutive images with the output label of the tensor being the output label of the most recent image in the new tensor. These input tensors are then passed on to the TCN model that generates the predicted probability distributions of the output classes. These probabilities are then used by the trade decision module to either take a ’buy’, ’sell’, or ’neutral’ stand in the market.
@@ -35,14 +36,14 @@ Once we have the raw input images we need to generate corresponding labels so th
 
 The threshold used in our case is ***0.5%***. The train, validation and test sets are separated chronologically as we want to maintain the temporal integrity of the dataset. The training set contains all the tensors from Jan, 2013 to Dec 2017, validation set containing tensors from Jan, 2018 to Dec, 2018, and test set from Jan, 2019 to Nov, 2020. The denser white line represents the actual prices and thinner colored lines represent the technical indicators for the same time period
 
-<p align="center"><img src="https://user-images.githubusercontent.com/71300644/103606736-2dee4780-4ee5-11eb-9723-8395fde9e72e.png", height="250"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/71300644/103606736-2dee4780-4ee5-11eb-9723-8395fde9e72e.png"></p>
 
 We wanted to reduce the resolution of the image to ensure the training procedure did not get clogged, at the same time ensuring all information is retained. To achieve this we resized the cropped image to 128x128 RGB image using openCV2. The pixel intensities were also normalized to remove any spikes in the image pixels, which is generally recommended for stable model training.
 
 ## Model Pipeline
 The plot below shows the general flow of our framework, the first 2 blocks are responsible for data generation and preprocessing steps. The third part of the model pipeline is responsible for creating a tensor of 10 consecutive images, which basically represents a sequence of images. 
 
-<p align="center"><img src="https://user-images.githubusercontent.com/71300644/103606858-81609580-4ee5-11eb-8269-88fa1cb122f2.png", height="200"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/71300644/103606858-81609580-4ee5-11eb-8269-88fa1cb122f2.png"></p>
 
 The TCN classifier then takes in the tensor of 10 images and generates a probability distribution over all three output classes. The trade decision module then takes buy, sell, or neutral trade decision based on this probability distribution. ***Currently in this version of the project, we use a simple ARGMAX formula which is standard practice in Machine Learning, however more esoteric rules can also be used in this module which adds additional flexibility to the proposed framework.***
 
@@ -52,19 +53,19 @@ The TCN classifier in our approach is trained with the following hyper-parameter
 ``` NUM TCN Filters = 64, Kernal Size = 3, learning rate = 10e-4,Optimizer = ADAM, NUM epochs = 300, Batch Normalization = True. ```
 Based on the loss plot in Figure below, we observe that the training procedure is fairly stable and the loss minimization maxes out at around epoch = 270, a similar pattern can be observed with the accuracy plot as well.
 
-<p align="center"><img src="https://user-images.githubusercontent.com/71300644/103607500-11530f00-4ee7-11eb-993b-55c903987f40.png", height="200"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/71300644/103607500-11530f00-4ee7-11eb-993b-55c903987f40.png"></p>
 
 The overall test set accuracy obtained on this multiclass classification task is ***52%***, and the confusion matrix along with precision-recall curves are shown below.
-<p align="center"><img src="https://user-images.githubusercontent.com/71300644/103608116-925ed600-4ee8-11eb-820c-507001b84c9b.png", height="120"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/71300644/103608116-925ed600-4ee8-11eb-820c-507001b84c9b.png"></p>
 
-<p align="center"><img src="https://user-images.githubusercontent.com/71300644/103608324-1c0ea380-4ee9-11eb-9014-0656f80c78e3.png", height="300"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/71300644/103608324-1c0ea380-4ee9-11eb-9014-0656f80c78e3.png"></p>
 
 From the above classification metric the performance on the ***buy*** class just pops out, the f-1 score as well as the accuracy on the buy lable are much higher than ***sell*** and ***neutral*** classes. This primarily down to the fact that the dataset contains a lot more buy labels than sell and neutral labels, since equity markets especially SPY over past few years have strongly trended positive.
 ``` One way to ameliorate this effect is to make balanced classes in the training set (which is not done in this version of the framework), which will make the training more stable and balanced.```
 ### Baseline classification results
 The table below compares the performance of TCN classifier against other baselibe classifiers like CNN, RF and SVM. TCN outperforms other baseline classifiers on all classification metrics except precision. The high precision exhibited by vanilla classifiers like SVM and RFs is down the fact that these models tend to overclassify one class, which in this case was the ’buy’ class. On closer inspection we found that both SVM and RFs failed to predict any ’neutral’ class in the test set. The TCN also exhibited highest Jaccard similarity metric, which indicates that it closely predicts the output classes.
 
-<p align="center"><img src="https://user-images.githubusercontent.com/71300644/103721930-df03e900-4f9c-11eb-9744-903950ad8b11.png", height="200"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/71300644/103721930-df03e900-4f9c-11eb-9744-903950ad8b11.png"></p>
 
 ### Strategy Return metrics
 To compute actual returns generated by each classifier, we take ***argmax*** of the output probability distribution and take bet in its direction, i.e. if highest probability is given to buy signal we go long in SPY ETF. On the execution side,
@@ -89,6 +90,7 @@ This post introduced an innovative solution to an algorithmic trading system bui
 ```
 
 The link to the github repository will be added shortly
+
 
 ## References ##
     1. Bai, S., Kolter, J. Z. & Koltun, V. An empirical evaluation of generic convolutional and recurrent networks for sequence modeling. arXiv preprint arXiv:1803.01271 (2018)
