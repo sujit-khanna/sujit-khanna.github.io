@@ -82,7 +82,7 @@ Based on the performance plot as well as performance metrics, TCN vastly outperf
 ## Conclusion and Future Work
 This post introduced an innovative solution to an algorithmic trading system built on the concepts of computer vision, the experiments also indicated the power of using price images and TCN model for time-series classification problems. The outperformance of the CNN model over RF and SVM models on the classification tasks exhibits the merit of using images of prices over raw data in image classification models. The research done in this post is pretty preliminary which incudes image preprocessing and filtering techniques, the next steps can invlove
 
-*   Uisng higher resolution images which will include more information and may improve the performance
+*   Using higher resolution images which will include more information and may improve the performance
 *   Include additional information in the images including non-price/alternative data of same frequency
 *   Use state-of-the-art filtering techniques as a preprocessing step to remove redundant information
 *   The threshold currently used uses a fixed precentage move, there's a lot of literature on adpative labelling techniques which can be used here to label the price images
