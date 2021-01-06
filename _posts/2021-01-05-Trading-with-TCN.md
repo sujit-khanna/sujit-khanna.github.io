@@ -1,9 +1,8 @@
 ---
 layout: post
-title: Systematic Trading Strategy based on Image Processing and Temporal Convolutional Networks
+title: Systematic Trading Strategy Based on Image Processing and Temporal Convolutional Networks
 ---
 
-## Motivation
 The majority of work done in classification of price moves using machine learning models use raw data even for an image classification algorithm like Convolutional Neural Network (CNN). However to highly dynamic and non-stationarity nature of stock prices these models either fail to capture any meaningful patterns or highly overfit to the training data (which is exacerbated for Deep Learning Models). Generally manual traders tend to looks the historical plot of the time series along with the assistance of technical indicators to assess the trend of the market going forward, these traders either look at specific patterns like EMA/DMA crossovers or something more intricate like evolution of these technical indicators in conjunction with the actual price moves over time. Using traditional machine learning techniques one can encode specific patters as features, but  modelling the intricate movement of the price becomes very challenging. Taking inspiration from above point in this post we devise a systematic trading that will convert the raw price data and technical indicators for a given lookback into a static image along (with approriate labels), process it and feed it to the Temporal Convoluational Network that will classify the trend over next N days (i.e. *long*, *short* or *neutral*). The two key advantages of above approach is that, 
 -   It transforms the raw data into a static image which makes the model less suscptible to non-stationarity nature of the financial time series.
 -   Since the information is in the form of an image, the convolutional filters can fine tune its weights via backpropogation to find areas of high information density
@@ -25,13 +24,16 @@ The raw prices used in this paper contains SPY ETF Prices from Jan, 2013 to Nov,
 Once we have the raw input images we need to generate corresponding labels so that we can train it on a classification model, the labeling scheme either labels the images as ’buy’, ’sell’ or neutral’ based on percentage price move(threshold) over the next 10 days. If the percentage move is above positive threshold the image is labelled as ’buy’, else if its below the negative threshold we label the image as ’sell’, else the image is labelled as ’neutral’. This procedure can be formalized as
 
 
-<!-- $ Label_{i}=\left\{
+ <!-- $$ Label_{i}=\left\{
                 \begin{array}{ll}
                   buy (1) \; \; \; if \;  price_{t+10}/price_{t+1} -1 > thresh \\
                   sell(-1) \; \; \; elif \; price_{t+10}/price_{t+1} -1 < -thresh \\
                   neutral(0) \; \; \; otherwise \\
                 \end{array}
-              \right. $ --> <img style="transform: translateY(0.25em);" src="../svg/m96wZGMT6P.svg"/>
+              \right. $$ --> 
+
+<div align="center"><img src="../svg/KvLUHiZQqP.svg"/></div> 
+
 
 
 The threshold used in our case is ***0.5%***. The train, validation and test sets are separated chronologically as we want to maintain the temporal integrity of the dataset. The training set contains all the tensors from Jan, 2013 to Dec 2017, validation set containing tensors from Jan, 2018 to Dec, 2018, and test set from Jan, 2019 to Nov, 2020. The denser white line represents the actual prices and thinner colored lines represent the technical indicators for the same time period
@@ -80,14 +82,13 @@ Based on the performance plot as well as performance metrics, TCN vastly outperf
 ## Conclusion and Future Work
 This post introduced an innovative solution to an algorithmic trading system built on the concepts of computer vision, the experiments also indicated the power of using price images and TCN model for time-series classification problems. The outperformance of the CNN model over RF and SVM models on the classification tasks exhibits the merit of using images of prices over raw data in image classification models. The research done in this post is pretty preliminary which incudes image preprocessing and filtering techniques, the next steps can invlove
 
-```
-1. Uisng higher resolution images which will include more information and may improve the performance
-2. Include additional information in the images including non-price/alternative data of same frequency
-3. Use state-of-the-art filtering techniques as a preprocessing step to remove redundant information
-4. The threshold currently used uses a fixed precentage move, there's a lot of literature on adpative labelling techniques which can be used here to label the price images
-5. The trade decision model in this post used a basic argmax function, an additional layer of complexity can be added on top of it to further optimize the trading signals
-6. Class imbalance was one of the issues in this framework as highlighted in this post. Training with balanced classes may improve the performance of the TCN model
-```
+*   Uisng higher resolution images which will include more information and may improve the performance
+*   Include additional information in the images including non-price/alternative data of same frequency
+*   Use state-of-the-art filtering techniques as a preprocessing step to remove redundant information
+*   The threshold currently used uses a fixed precentage move, there's a lot of literature on adpative labelling techniques which can be used here to label the price images
+*   The trade decision model in this post used a basic argmax function, an additional layer of complexity can be added on top of it to further optimize the trading signals
+*   Class imbalance was one of the issues in this framework as highlighted in this post. Training with balanced classes may improve the performance of the TCN model
+
 
 The link to the github repository will be added shortly
 
