@@ -11,9 +11,11 @@ In this post we discuss an approach to identify and analyze different market/cor
 * We then split the data into monthly blocks that gives us a total of 92 non-overlapping subsets (blocks), corresponding to 91 months. Where each block contains monthly price series for each of the 47 ETFs under consideration
 
 * We then convert the 91 non-overlapping blocks into denoised hierarchical correlation based distances. The process of creating such a correlation matrix can be briefly summaried below, and the distance metric applied on this matrix is the ***euclidean distance***
-    
-    * The first step involves calculating the price returns and creating the denoised correlation matrix using the Constant Residual Eigenvalue Method, that fits the Marcenko-Pastur (M-P) distribution to calculate the maximum theoretical eigenvalue threshold of the original correlation matrix. This threshold is used to filter out noisy eigenvalues, and the denoised correlation matrix is generated from the filtered eigenvalues and eigenvectors.
-    *  The next step involves adding a hierarchical structure to the correlation matrix, this approach is inspired by "Hierarchical PCA and Applications to Portfolio Management: Marco Avellaneda"[2]. Where the correlation matrix is regenerated using the natural hierarchy extracted by agglomerative hierarchical ward clustering.
+
+  * The first step involves calculating the price returns and creating the denoised correlation matrix using the Constant Residual Eigenvalue Method, that fits the Marcenko-Pastur (M-P) distribution to calculate the maximum theoretical eigenvalue threshold of the original correlation matrix. This threshold is used to filter out noisy eigenvalues, and the denoised correlation matrix is generated from the filtered eigenvalues and eigenvectors.
+
+    * The next step involves adding a hierarchical structure to the correlation matrix, this approach is inspired by "Hierarchical PCA and Applications to Portfolio Management: Marco Avellaneda"[2]. Where the correlation matrix is regenerated using the natural hierarchy extracted by agglomerative hierarchical ward clustering.
+
     * The figure below compares three different methods of generating correlation matrics, the first sub-plot is the regular pearson's correlation matrix, second sub-plot represents the theory-implied correlation matrix from *Marcos Lopez de Prado*, and the last sub-plot (right) represents the hierarchical correlation matrix  used in this post. As shown in the plot below the hierarchical correlation matrix has more pronounced structure than other two correlation matrices.
 
 <p align="center"><img src="https://user-images.githubusercontent.com/71300644/105565663-ed206c00-5cf5-11eb-8b90-1ade815044aa.png"></p>
@@ -26,7 +28,6 @@ In this post we discuss an approach to identify and analyze different market/cor
 
 * We cluster the cophenetic correlation matrix again, and cut off the dendogram to extract 5 flat clusters where each cluster represents a different correlation regime. (5 clusters are choosen instead of standard choice of 3 to increase the granularity of the results). After clustering different monthly blocks, each cluster is analyzed in detail by mapping them to market behavior and network analysis.
  
-
  ## Results
 The results analyzed in this section  describe how the markets behave in each correlation regime. 
 
@@ -75,6 +76,57 @@ Based on the plots above we can see a clear distinction between the different cl
 
 To check how closely associated each cluster is to other, we calculated the cophenetic correlation matrix for each cluster/regime, by computing the cophenetic distance vectors from the dendogram of hierarchical correlation metrix for each cluster. The heatmap of the cophenetic correlation matrix is shown below.
 
-<p align="center"><img src="https://user-images.githubusercontent.com/71300644/105570269-397ba400-5d16-11eb-856f-80d23f03e17e.png", height="180"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/71300644/105570269-397ba400-5d16-11eb-856f-80d23f03e17e.png", , height="180"></p>
 
 The heatmap indicates the clusters 1 and 2 are highly correlated to each other (as both represent high vol/ low return behavior), similarly cluster 3 and 5 exhibit sort of higher correlation as they exhibit high return/ low volatility behavior.
+
+### Network Analysis of Different Cluster Regimes
+Since financial markets exhibit hierarchical structure it was natural that analyze each cluster as a financial network. These networks will be analyzed visually as well as by its topological features. A wide variety of networks can be used to model financial markets like threshold nework, causal networks, knowledge graphs etc. However in this section we will create a minimum spanning tree (MST) from the hierarchical correlation matrices for each cluster, such that only the highest correlated connections are chosen.
+The plot below, shows the MST constructed for each cluster/regime
+
+<p align="center"><img src="https://user-images.githubusercontent.com/71300644/105570835-89a83580-5d19-11eb-852d-e3c8f1e4f519.png",height="200"></p>
+
+<p align="center"><img src="https://user-images.githubusercontent.com/71300644/105570848-a80e3100-5d19-11eb-9e02-278a4b5b913d.png", height="180"></p>
+
+
+From the plot above we can observe that 
+
+* MST for clusters 1 and 2 shrinks, where as for clusters 3,4, and 5 it expands. Also note that for cluster 5, we can observe three seperate regions in the MST, that are grouped together. This is in-line with existing research that states that MST strongly shrinks during market crisis, and espands during periods of high returns and low volatility.
+
+* For clusters 1, SHY ETF i.e 1-3 Year Treasury Bond ETF, has the most number of edges indicating that this ETF dominates during the period of market crisis (which follows economic rationale), similarly for cluster 2 which is also a low return/high volatility clusters has most number of connections to TLT ETF, i.e. iShares 20+ Year Treasury Bond ETF, which is a longer maturity ETF
+
+* Conversly for bullish regime clusters, we observe ETFs in either Credit/Equity/Forex/Comdty space with the most number of edge connections, i.e. for cluster 4 most number of connections come from the LQD ETF which is iBoxx USD Investment Grade Corporate Bond ETF. In cluster 5 highest number of edges are directed to/from XLP consumer staples S&P500 ETF and GLD Gold Spot ETF.
+
+We will now analyze topological features of the MST for each cluster, the topological features used are,
+
+* ***Average Shortest Path Length (ASPL)***:As the name suggests it averages the shortest path length between two nodes for the entire graph (MST)
+
+* ***Diameter***: This feature represents the diameter of the MST for each cluster
+
+* ***Number of Communities (NC)***: For each cluster this represents the community of stocks that are closely related to each other
+
+* ***Betweenness Centrality (BC)*** : Betweenness centrality of a node 𝑣 is the sum of the fraction of all-pairs shortest paths that pass through 𝑣. For the graph level analysis we will average this value for all the nodes
+
+* ***Closeness Centrality (CC)***: It is reciprocal of the average shortest path distance to u over all n-1 reachable nodes, higher values of closeness indicate higher centrality. As before we will average this value for all the nodes in the graph
+
+
+* ***Eigenvector Centrality (EC)***: The eigenvector centrality computes the centrality for a node based on the centrality of its neighbors, which will be average for all the nodes for graph level analysis. EC can alosbe a measure of influence of a particular node in a network
+
+The table below contains the topological feature values for all 5 clusters
+
+<p align="center"><img src="https://user-images.githubusercontent.com/71300644/105614319-a3d42900-5d96-11eb-9be5-89504fa63eeb.png"></p>
+
+From the table it is evident that MSTs of clusters 1 and 2 are highly condensed exhibited by low *ASPL*, *BC*, and high *CC* feature values. Clusters 3 and 5 seem to exhibit the most stretched out MSTs based on this topological features. One interesting observation emenating from the table above is that cluster 3 exhibits the lowest *EC* score, which might indicate that this cluster/regime is the most diversified, that contains the least number of dominating factors.
+
+The last table in this section looks at nodes that dominate the MST with the most influencing feature values, in this table we add another feature called ***Degree*** that indicates the ETF that has the highest number of edge connections. In the table below the ETFs/nodes are chosen based on the highest feature values.
+
+<p align="center"><img src="https://user-images.githubusercontent.com/71300644/105614650-9ddf4780-5d98-11eb-8029-dfae79aef763.png"></p>
+
+This table confirms the results from the visual analysis of the MST for all clusters,
+
+* In high volatility/low return cluster fixed income products are the most influential ETFs which follows economic rationale
+
+* For regime 4, Credit ETF LQD dominates the MST, whereas for bull market regimes 3 and 5 Forex ETF (FXE), and Gold & Equity ETFs (i.e. GLD and VTI) seem to be the most influentual ETFs
+
+
+## Conclusion
