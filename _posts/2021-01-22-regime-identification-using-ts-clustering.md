@@ -33,7 +33,7 @@ The results analyzed in this section describe how the markets behave in each cor
 ### Cluster Regimes vs VIX Index
 One of the most rudimentary indicator of the market regime is the ***VIX Index***. Generally, during stressful market periods, the VIX index tends to rally and is subdued when there's a low risk of an adverse market event. To analyze the interaction between different clusters (regimes) and the VIX index, we plot the cluster labels for every month (corresponding to monthly dendrograms) against the VIX index, as shown below.
 
-<p align="center"><img src="https://user-images.githubusercontent.com/71300644/105568785-15b26100-5d0a-11eb-8c5c-0a81071a74cf.png" height=300></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/71300644/105568785-15b26100-5d0a-11eb-8c5c-0a81071a74cf.png", height="300"></p>
 
 Based on quick visual analysis we can see that 
 
@@ -63,7 +63,7 @@ In this subsection we analyze the correlation structure under different regimes,
 
 <p align="center"><img src="https://user-images.githubusercontent.com/71300644/105569746-5c0bbe00-5d12-11eb-8993-41f722d02c26.png"></p>
 
-<p align="center"><img src="https://user-images.githubusercontent.com/71300644/105569759-76de3280-5d12-11eb-8824-956e4ae3faf1.png" height=180></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/71300644/105569759-76de3280-5d12-11eb-8824-956e4ae3faf1.png", height="180"></p>
 
 Based on the plots above we can see a clear distinction between the different clusters, which is also supported by the broad market performances observed in the previous subsection. More specifically,
 
@@ -83,9 +83,9 @@ The heatmap indicates the clusters 1 and 2 are highly correlated to each other (
 Since financial markets exhibit hierarchical structure it was natural that we analyzed each cluster as a financial network. These networks will be analyzed visually as well as by their topological features. A wide variety of networks can be used to model financial markets like threshold networks, causal networks, knowledge graphs, etc. However, in this sub-section, we will create a minimum spanning tree (MST) from the hierarchical correlation matrices for each cluster.
 The plot below, shows the MST constructed for each cluster/regime
 
-<p align="center"><img src="https://user-images.githubusercontent.com/71300644/105570835-89a83580-5d19-11eb-852d-e3c8f1e4f519.png"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/71300644/105570835-89a83580-5d19-11eb-852d-e3c8f1e4f519.png", height="200"></p>
 
-<p align="center"><img src="https://user-images.githubusercontent.com/71300644/105570848-a80e3100-5d19-11eb-9e02-278a4b5b913d.png" height=180></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/71300644/105570848-a80e3100-5d19-11eb-9e02-278a4b5b913d.png", height="180"></p>
 
 
 From the plot above we can observe that 
