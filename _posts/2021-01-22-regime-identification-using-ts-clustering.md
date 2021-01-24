@@ -115,7 +115,7 @@ The table below contains the topological feature values for all 5 clusters
 
 <p align="center"><img src="https://user-images.githubusercontent.com/71300644/105614319-a3d42900-5d96-11eb-9be5-89504fa63eeb.png"></p>
 
-From the table, it is evident that MSTs of clusters 1 and 2 are highly condensed exhibited by low *ASPL*, *BC*, and high *CC* feature values. Clusters 3 and 5 seem to exhibit the most stretched out MSTs based on these topological features. One interesting observation emanating from the table above is that *** cluster 3 exhibits the lowest *EC* score, which might indicate that this cluster/regime is the most diversified, that is not dominated by few ETFs ***.
+From the table, it is evident that MSTs of clusters 1 and 2 are highly condensed exhibited by low *ASPL*, *BC*, and high *CC* feature values. Clusters 3 and 5 seem to exhibit the most stretched out MSTs based on these topological features. One interesting observation emanating from the table above is that ***cluster 3 exhibits the lowest EC score, which might indicate that this cluster/regime is the most diversified, that is not dominated by few ETFs***.
 
 The last table in this section looks at nodes that dominate the MST with the most influencing feature values, in this table we add another feature called ***Degree*** that indicates the ETF that has the highest number of edge connections. In the table below the ETFs/nodes are chosen based on the highest feature values.
 
