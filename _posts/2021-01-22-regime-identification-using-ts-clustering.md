@@ -83,7 +83,7 @@ The heatmap indicates the clusters 1 and 2 are highly correlated to each other (
 Since financial markets exhibit hierarchical structure it was natural that we analyzed each cluster as a financial network. These networks will be analyzed visually as well as by their topological features. A wide variety of networks can be used to model financial markets like threshold networks, causal networks, knowledge graphs, etc. However, in this sub-section, we will create a minimum spanning tree (MST) from the hierarchical correlation matrices for each cluster.
 The plot below, shows the MST constructed for each cluster/regime
 
-<p align="center"><img src="https://user-images.githubusercontent.com/71300644/105570835-89a83580-5d19-11eb-852d-e3c8f1e4f519.png", height="200"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/71300644/105570835-89a83580-5d19-11eb-852d-e3c8f1e4f519.png" height="200"></p>
 
 <p align="center"><img src="https://user-images.githubusercontent.com/71300644/105570848-a80e3100-5d19-11eb-9e02-278a4b5b913d.png" height="180"></p>
 
