@@ -2,7 +2,9 @@
 layout: post
 title: Quantum Machine Learning - Assessing advantage over classical machine learning algorithms
 ---
-In this article we take a look at how state-of-the-art quantum machine learning classifiers perform against a classical machine learning algorithm like multi-layer perceptron and check if it exhibits any form of quantum advantage over the classical algorithm. Quantum algorithms are built specifically to operate on quantum computers which are fundamentally different from classical computers. The information in classical computers are stored in bits which take binary values of 0 or 1, whereas the quantum computer operates on qubits (quantum bits). Each qubit can assume a state of |0>, |1>, or in superposition of these two states a|0> + b|1>, 
+In this article we take a look at how state-of-the-art quantum machine learning classifiers perform against a classical machine learning algorithm like multi-layer perceptron and check if it exhibits any form of quantum advantage over the classical algorithm.
+
+Quantum algorithms are built specifically to operate on quantum computers which are fundamentally different from classical computers. The information in classical computers are stored in bits which take binary values of 0 or 1, whereas the quantum computer operates on qubits (quantum bits). Each qubit can assume a state of |0>, |1>, or in superposition of these two states a|0> + b|1>, 
 where a,b are complex numbers. This enables qubits to take multiple values at a time which helps in performing computations which is not possible using a conventional computer. The qubits can also be entangled where multiple qubits are intertwined and measuring one qubit can tell is the state of the other and collapse the superposition irrespective of the distance at which these qubits are separated (can be light years away), the phenomenon of quantum teleporation and faster than light communication (proven to be impossible currently) are based on this concept.
 
 ## Quantum Machine Learning
