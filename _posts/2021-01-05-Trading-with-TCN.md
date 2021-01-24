@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Systematic Trading Strategy Based on Image Processing and Temporal Convolutional Networks
+title: Systematic trading strategy based on image processing and Temporal Convolutional Networks
 ---
 
 The majority of work done in classification of price moves using machine learning models use raw data even for an image classification algorithm like Convolutional Neural Network (CNN). However to highly dynamic and non-stationarity nature of stock prices these models either fail to capture any meaningful patterns or highly overfit to the training data (which is exacerbated for Deep Learning Models). Generally manual traders tend to looks the historical plot of the time series along with the assistance of technical indicators to assess the trend of the market going forward, these traders either look at specific patterns like EMA/DMA crossovers or something more intricate like evolution of these technical indicators in conjunction with the actual price moves over time. Using traditional machine learning techniques one can encode specific patters as features, but  modelling the intricate movement of the price becomes very challenging. Taking inspiration from above point in this post we devise a systematic trading that will convert the raw price data and technical indicators for a given lookback into a static image along (with approriate labels), process it and feed it to the Temporal Convoluational Network that will classify the trend over next N days (i.e. *long*, *short* or *neutral*). The two key advantages of above approach is that, 
