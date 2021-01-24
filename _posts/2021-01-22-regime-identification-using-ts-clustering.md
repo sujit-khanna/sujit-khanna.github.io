@@ -33,7 +33,7 @@ The results analyzed in this section describe how the markets behave in each cor
 ### Cluster Regimes vs VIX Index
 One of the most rudimentary indicator of the market regime is the ***VIX Index***. Generally, during stressful market periods, the VIX index tends to rally and is subdued when there's a low risk of an adverse market event. To analyze the interaction between different clusters (regimes) and the VIX index, we plot the cluster labels for every month (corresponding to monthly dendrograms) against the VIX index, as shown below.
 
-<p align="center"><img src="https://user-images.githubusercontent.com/71300644/105568785-15b26100-5d0a-11eb-8c5c-0a81071a74cf.png", height="300"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/71300644/105568785-15b26100-5d0a-11eb-8c5c-0a81071a74cf.png", height="250"></p>
 
 Based on quick visual analysis we can see that 
 
